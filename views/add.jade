@@ -2,19 +2,15 @@ extends ../node_modules/jade-bootstrap/_bootstrap
 
 block body
   +navbar("Colenso Project", "dropdown_menu")
-    +nav_item("/","active") Home 
+    +nav_item("/") Home 
       +icon("home")
     +nav_item("/browse") Browse
       +icon("book")
-    +nav_item("/add") Add
+    +nav_item("/add", "active") Add
       +icon("plus")
     +nav_item("/find") Search
       +icon("search")
   .container
     h1= title
     .container
-    p| Welcome to the #{title}!
-    form(action="/search", method="get")
-      input(type="text", name="searchString")
-      input(type="submit")
-     
+    p| Browse page or tab
