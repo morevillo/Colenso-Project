@@ -14,10 +14,15 @@ block body
     h1= title
     .container
     p| Search Page
-    form(action="/find", method="get")
-      input(type="text", name="docTitle", placeholder="Enter Title of Document")
-      input(type="submit")
+    +panel-primary("Text Search")
+      form(action="/find", method="get")
+        input(type="text", name="docTitle", placeholder="Enter Text")
+        input(type="submit")
+    +panel-primary("XQuery Search")
+      form(action="/find", method="get")
+        input(type="text", name="queryFile", placeholder="Enter XQuery")
+        input(type="submit")
     .container
       h2 Search Results
       each item in search_result
-        li !{item}
+        +list-group-links([{text: item, url:item}])

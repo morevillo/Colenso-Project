@@ -33,9 +33,11 @@ router.get('/add', function(req, res, next) {
 /*GET search page*/
 router.get('/find', function(req, res, next) {
 	var title = req.query.docTitle;
-	if(title !== undefined){
+	var querySearch = req.query.queryFile;
+	if(title){
+		if(title !== undefined){
 		var query = "XQUERY declare default element namespace 'http://www.tei-c.org/ns/1.0'; for $t in //text where matches($t, '" + title + "', 'i') return db:path($t)";
-		//var query = "XQUERY declare default element namespace 'http://www.tei-c.org/ns/1.0';  " + title;
+		//var query = "XQUERY declare default element namespace 'http://www.tei-c.org/ns/1.0';  " + "for $t in "+title+" return db:path($t)";
 		console.log(query);
 	 	client.execute(query,
 	  	function(error, result){
@@ -47,9 +49,26 @@ router.get('/find', function(req, res, next) {
 	  		}
 	  	});
 	 }
-	 else{
-	 	res.render('find', { title: 'Find page', search_result: []});
+	}
+	else if(querySearch){
+		if(querySearch !== undefined){
+		//var query = "XQUERY declare default element namespace 'http://www.tei-c.org/ns/1.0'; for $t in //text where matches($t, '" + title + "', 'i') return db:path($t)";
+		var query = "XQUERY declare default element namespace 'http://www.tei-c.org/ns/1.0';  " + "for $t in "+querySearch+" return db:path($t)";
+		console.log(query);
+	 	client.execute(query,
+	  	function(error, result){
+	  		if(error){
+	  			console.error(error);
+	  		}else{
+	  			console.log("RESULT IS: " + result.result);
+	  			res.render('find', { title: 'Find page', search_result: result.result.split('\n')});
+	  		}
+	  	});
 	 }
+	}	
+	else{
+  	  res.render('find', { title: 'Find page', search_result: []});
+	}
 });
 
 /*GET files page depending on the xml file selected*/
