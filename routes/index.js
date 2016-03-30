@@ -34,6 +34,7 @@ router.get('/add', function(req, res, next) {
 router.get('/find', function(req, res, next) {
 	var title = req.query.docTitle;
 	var querySearch = req.query.queryFile;
+	var logicSearch = req.query.logicQuery;
 	if(title){
 		if(title !== undefined){
 		var query = "XQUERY declare default element namespace 'http://www.tei-c.org/ns/1.0'; for $t in //text where matches($t, '" + title + "', 'i') return db:path($t)";
@@ -45,29 +46,43 @@ router.get('/find', function(req, res, next) {
 	  			console.error(error);
 	  		}else{
 	  			console.log("RESULT IS: " + result.result);
-	  			res.render('find', { title: 'Find page', search_result: result.result.split('\n')});
+	  			res.render('find', { title: 'Search page', search_result: result.result.split('\n')});
 	  		}
 	  	});
 	 }
 	}
 	else if(querySearch){
-		if(querySearch !== undefined){
-		//var query = "XQUERY declare default element namespace 'http://www.tei-c.org/ns/1.0'; for $t in //text where matches($t, '" + title + "', 'i') return db:path($t)";
-		var query = "XQUERY declare default element namespace 'http://www.tei-c.org/ns/1.0';  " + "for $t in "+querySearch+" return db:path($t)";
+	  if(querySearch !== undefined){
+	    //var query = "XQUERY declare default element namespace 'http://www.tei-c.org/ns/1.0'; for $t in //text where matches($t, '" + title + "', 'i') return db:path($t)";
+		var query = "XQUERY declare default element namespace 'http://www.tei-c.org/ns/1.0';  " + "for $t in "+ querySearch +" return db:path($t)";
 		console.log(query);
 	 	client.execute(query,
+	  	function(error, result){
+	  	    if(error){
+	  			console.error(error);
+	  		}else{
+	  			console.log("RESULT IS: " + result.result);
+	  			res.render('find', { title: 'Search page', search_result: result.result.split('\n')});
+	  		}
+	  	});
+	 }
+	}
+	else if(logicSearch){
+	  var logicString = "'" + logicSearch + "'";
+	  logicString = logicString.replace(" AND ", '\' ftand \'').replace(" OR ", '\' ftor \'').replace(" NOT ", '\' ftnot \'');
+	  var query = "XQUERY declare default element namespace 'http://www.tei-c.org/ns/1.0';  " + "for $t in //TEI[. contains text "+ logicString +" using wildcards] return db:path($t)";
+	  client.execute(query,
 	  	function(error, result){
 	  		if(error){
 	  			console.error(error);
 	  		}else{
 	  			console.log("RESULT IS: " + result.result);
-	  			res.render('find', { title: 'Find page', search_result: result.result.split('\n')});
+	  			res.render('find', {title: 'Search Page', search_result: result.result.split('\n')});
 	  		}
 	  	});
-	 }
-	}	
+	}
 	else{
-  	  res.render('find', { title: 'Find page', search_result: []});
+  	  res.render('find', { title: 'Search page', search_result: []});
 	}
 });
 

@@ -13,16 +13,28 @@ block body
   .container
     h1= title
     .container
-    p| Search Page
-    +panel-primary("Text Search")
-      form(action="/find", method="get")
-        input(type="text", name="docTitle", placeholder="Enter Text")
-        input(type="submit")
-    +panel-primary("XQuery Search")
-      form(action="/find", method="get")
-        input(type="text", name="queryFile", placeholder="Enter XQuery")
-        input(type="submit")
-    .container
-      h2 Search Results
-      each item in search_result
-        +list-group-links([{text: item, url:item}])
+    +tab-list(["Text", "XQuery", "Logical"],0)
+      +tab("Text","active")
+        +panel-primary("Text Search")
+          p This search box will go through the database and its documents, and show up the files which contains your exact input
+          p Eg: Diary, Wellington
+            form(action="/find", method="get")
+              +input('text', 'docTitle', 'Enter Text', '', 'docTitle')              
+              +submit("Submit")
+      +tab("XQuery")
+        +panel-primary("XQuery Search")
+          p This search box will go through the database and its documents, and will show up files which have the same atrributes as your XQuery
+          p Eg: (//name[@type='place'])[1]
+            form(action="/find", method="get")
+              +input('text', 'queryFile', 'Enter XQuery', '', 'queryFile')
+              +submit("Submit")
+      +tab("Logical")
+        +panel-primary("Logical Search")
+          form(action="/find", method="get")
+            +input('text', 'queryFile', 'Enter Logic Search', '', 'logicQuery')
+            +submit("Submit")
+
+    h2 Search Results
+     each item in search_result
+       +list-group-links([{text: item, url:item}])
+
