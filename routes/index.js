@@ -1,6 +1,11 @@
 var express = require('express');
 var router = express.Router();
 
+var multer = require('multer');
+var storage = multer.memoryStorage();
+var upload = multer({storage: storage});
+router.use(upload.single('file'));
+
 var basex = require('basex');
 var client = new basex.Session("127.0.0.1", 8080, "admin", "admin");
 client.execute("OPEN Colenso");
@@ -18,16 +23,35 @@ router.get('/browse', function(req, res, next) {
   			console.error(error);
   		}else{  			
   			//console.log(result);
-  			//var xml_list = result.split("\\r?\\n");
   			res.render('browse', { title: 'Browse Page', place: result.result.split('\n')});
   		}
   	});
   //res.render('browse', { title: 'Colenso Project' });
 });
 
-/*GET browse page*/
+/*POST to upload file */
+router.post('/upload', function(req, res, next){
+
+});
+
+/*GET dowload file*/
+router.get('/download', function(req, res, next) {
+	var file = req.query.document;
+	client.execute("XQUERY doc('Colenso/" + file +"')", 
+		function(error, result){
+			if(error){
+				console.error(error);
+			}else{				
+				res.writeHead(200, {'Content-Disposition': 'attachment; fileName=' + file});
+				res.write(result.result);
+				res.end('ok');
+			}
+		});	
+});
+
+/*GET add page*/
 router.get('/add', function(req, res, next) {
-  res.render('add', { title: 'Add page' });
+	res.render('add', { title: 'Add page'});
 });
 
 /*GET search page*/
@@ -97,7 +121,7 @@ router.get('/:author/:fileType/:xmlFile', function(req, res, next){
   		if(error){
   			console.error(error);
   		}else{
-  			res.render('file', {title: 'File Page', place: result.result});
+  			res.render('file', {title: 'File Page', place: result.result, fileName: author+"/"+fileType+"/"+xmlFile});
   		}
   	});
 });

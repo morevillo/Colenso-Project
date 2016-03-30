@@ -1,7 +1,7 @@
 extends ../node_modules/jade-bootstrap/_bootstrap
 
 block body
-  +navbar("Colenso Project", "dropdown_menu")
+  +navbar-fixed("Colenso Project", "dropdown_menu")
     +nav_item("/") Home 
       +icon("home")
     +nav_item("/browse") Browse
@@ -10,6 +10,8 @@ block body
       +icon("plus")
     +nav_item("/find", "active") Search
       +icon("search")
+  br
+  br
   .container
     h1= title
     .container
