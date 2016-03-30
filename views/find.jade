@@ -12,6 +12,14 @@ block body
       +icon("search")
   br
   br
+  style.
+    h1 {
+      font-family: Elephant;
+      color: #90EE90;
+    }
+    h2 {
+      font-family: Elephant;
+    }
   .container
     h1= title
     .container
@@ -39,7 +47,7 @@ block body
             +input('text', 'queryFile', 'Enter Logic Search', '', 'logicQuery')
             +submit("Submit")
 
-    h2 Search Results
+    h2 Search Results :
      each item in search_result
        +list-group-links([{text: item, url:item}])
 

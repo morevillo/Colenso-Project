@@ -1,7 +1,7 @@
 extends ../node_modules/jade-bootstrap/_bootstrap
 
 block body
-  +navbar("Colenso Project", "dropdown_menu")
+  +navbar-fixed("Colenso Project", "dropdown_menu")
     +nav_item("/","active") Home 
       +icon("home")
     +nav_item("/browse") Browse
@@ -10,6 +10,15 @@ block body
       +icon("plus")
     +nav_item("/find") Search
       +icon("search")
+  style.
+    h1 {
+      font-family: Elephant;
+      color: #90EE90;
+    }
+    p{
+    	font-family: Times New Roman;
+    	font-size: 18px;
+    }
   .container
     +img-responsive-center("images/Colenso_Project_Logo.jpg","Colenso Logo")
     

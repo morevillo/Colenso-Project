@@ -47,8 +47,16 @@ router.get('/download', function(req, res, next) {
 /*GET delete item*/
 router.get('/delete', function(req, res, next){
 	var file = req.query.document;
-	//client.execute('DELETE Colenso/' + )
-	res.render('browse', {title: 'Browse Page'});
+	client.execute('DELETE ' + file,
+		function(error, result){
+			if(error){
+				console.error(error);
+			}else{
+				res.render('browse', {title: 'Browse Page', deleteFile: true});
+			}
+		});
+
+	res.render('browse', {title: 'Browse Page', deleteFile: false});
 })
 
 /*GET add page*/

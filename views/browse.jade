@@ -12,10 +12,18 @@ block body
       +icon("search")
   br
   br
+  style.
+    h1 {
+      font-family: Elephant;
+      color: #90EE90;
+    }
+    h2 {
+      font-family: Times New Roman;
+    }
   .container
     h1= title
     .container
-      h2 List of files
+      h2 List of files in your database...
       
       each item in place
         +list-group-links([{text: item, url:item}])
