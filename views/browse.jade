@@ -21,4 +21,6 @@ block body
         +list-group-links([{text: item, url:item}])
         +a-btn-primary("/download?document=" + item) Download
           +icon("save")
+        +a-btn-danger("/delete?document=" + item) Delete
+          +icon("remove")
           

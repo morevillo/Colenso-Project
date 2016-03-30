@@ -32,6 +32,9 @@ block body
               +submit("Submit")
       +tab("Logical")
         +panel-primary("Logical Search")
+          p This search box will go through the database and its documents, and will show up files which match the logical searches you have entered
+          p Example for wildcard: delusio.*
+          p Example for logical expressions: Native AND breakfasted, Native OR night
           form(action="/find", method="get")
             +input('text', 'queryFile', 'Enter Logic Search', '', 'logicQuery')
             +submit("Submit")

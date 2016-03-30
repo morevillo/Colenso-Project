@@ -29,11 +29,6 @@ router.get('/browse', function(req, res, next) {
   //res.render('browse', { title: 'Colenso Project' });
 });
 
-/*POST to upload file */
-router.post('/upload', function(req, res, next){
-
-});
-
 /*GET dowload file*/
 router.get('/download', function(req, res, next) {
 	var file = req.query.document;
@@ -49,9 +44,37 @@ router.get('/download', function(req, res, next) {
 		});	
 });
 
+/*GET delete item*/
+router.get('/delete', function(req, res, next){
+	var file = req.query.document;
+	//client.execute('DELETE Colenso/' + )
+	res.render('browse', {title: 'Browse Page'});
+})
+
 /*GET add page*/
-router.get('/add', function(req, res, next) {
+router.get('/add', function(req, res, next) {	
 	res.render('add', { title: 'Add page'});
+});
+
+/*POST to upload file */
+router.post('/add', function(req, res, next){
+	var fileName = req.file.originalname;
+	var buff = req.file.buffer.toString();
+	//console.log("Entering POST");
+	if(req.file){
+		//console.log("ENTERING if");
+		client.execute('ADD TO Colenso/new/'+ fileName + ' "'+ buff +'"',
+		function(error, result){
+			if(error){
+				res.status(500).send(error);
+			}else{
+				console.log("File has been uploaded");
+				res.render('add', { title: 'Add page', upload: true});
+			}
+		});
+	}	else{
+		res.render('add', { title: 'Add page', upload: false});
+	}
 });
 
 /*GET search page*/

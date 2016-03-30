@@ -14,3 +14,9 @@ block body
     h1= title
     .container
     h2 Upload your files from this page!
+    form(action="/add", method="post", enctype="multipart/form-data")
+      +input('file', 'file', '', '', 'file')
+      +submit("Upload")
+    if upload
+      +alert-success("<strong>Your file has been uploaded!</strong>")
+    
